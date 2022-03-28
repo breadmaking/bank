@@ -5,7 +5,7 @@ from freezegun import freeze_time
 from bank.bank import Account, NoBalanceAvailable
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def test_account():
     account = Account()
     return account
