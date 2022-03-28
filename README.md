@@ -1,6 +1,6 @@
 # Bank tech test
 
-# Set Up / Installation
+## Set Up / Installation
 
 Install [Python](https://wiki.python.org/moin/BeginnersGuide/Download)
 
