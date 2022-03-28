@@ -19,6 +19,14 @@ pytest
 ```
 pytest --cov
 ```
+### To run flake8 liner:
+```
+flake8
+```
+
+## Approach
+
+
 
 ## Specification
 

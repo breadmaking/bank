@@ -1,5 +1,5 @@
 from datetime import datetime
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 import pytest
 from freezegun import freeze_time
 from bank.bank import Account, NoBalanceAvailable
@@ -113,9 +113,8 @@ def test_bank_account_stores_multiple_withdraws(test_account):
 def test_withdraw_cannot_exceed_balance_total(test_account):
     with pytest.raises(NoBalanceAvailable) as e:
         test_account.withdraw(500)
-        assert (
-            str(e.value)
-            == f"Your balance is 0. You do not have enough to withdraw 500."
+        assert str(e.value) == (
+            "Your balance is 0." "You do not have enough to withdraw 500."
         )
 
 
@@ -130,8 +129,10 @@ def test_account_can_print_statement(datetime_mock, test_account, capsys):
     test_account.print_statement()
     out, err = capsys.readouterr()
     print(out)
-    assert (
-        out
-        == "date || credit || debit || balance\n14/01/2023 || || 500.00 || 2500.00\n13/01/2023 || 2000.00 || || 3000.00\n10/01/2023 || 1000.00 || || 1000.00\n"
+    assert out == (
+        "date || credit || debit || balance\n"
+        "14/01/2023 || || 500.00 || 2500.00\n"
+        "13/01/2023 || 2000.00 || || 3000.00\n"
+        "10/01/2023 || 1000.00 || || 1000.00\n"
     )
     assert err == ""

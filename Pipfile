@@ -8,6 +8,7 @@ pytest = "*"
 pytest-cov = "*"
 freezegun = "*"
 black = "*"
+flake8 = "*"
 
 [dev-packages]
 

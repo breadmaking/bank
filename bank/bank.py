@@ -1,10 +1,12 @@
 from datetime import datetime
-from multiprocessing.dummy import current_process
 
 
 class NoBalanceAvailable(Exception):
     def __init__(self, curent_balance, withdraw_amount):
-        self.error = f"Your balance is {curent_balance}. You do not have enough to withdraw {withdraw_amount}."
+        self.error = (
+            f"Your balance is {curent_balance}."
+            f"You do not have enough to withdraw {withdraw_amount}."
+        )
         super().__init__(self.error)
 
 
@@ -43,10 +45,18 @@ class Account:
         self.actions.sort(key=lambda item: item["date"], reverse=True)
         for action in self.actions:
             if action["type"] == "deposit":
-                str = f"{action['date'].strftime('%d/%m/%Y')} || {'{0:.2f}'.format(action['amount'])} || || {'{0:.2f}'.format(action['current_balance'])}"
+                str = (
+                    f"{action['date'].strftime('%d/%m/%Y')} || "
+                    f"{'{0:.2f}'.format(action['amount'])} || || "
+                    f"{'{0:.2f}'.format(action['current_balance'])}"
+                )
                 str_list.append(str)
             else:
-                str = f"{action['date'].strftime('%d/%m/%Y')} || || {'{0:.2f}'.format(action['amount'])} || {'{0:.2f}'.format(action['current_balance'])}"
+                str = (
+                    f"{action['date'].strftime('%d/%m/%Y')} || || "
+                    f"{'{0:.2f}'.format(action['amount'])} || "
+                    f"{'{0:.2f}'.format(action['current_balance'])}"
+                )
                 str_list.append(str)
 
         return print("\n".join(str_list))
