@@ -1,10 +1,11 @@
 from datetime import datetime
+from .statement import Statement
 
 
 class NoBalanceAvailable(Exception):
-    def __init__(self, curent_balance, withdraw_amount):
+    def __init__(self, current_balance, withdraw_amount):
         self.error = (
-            f"Your balance is {curent_balance}."
+            f"Your balance is {current_balance}."
             f"You do not have enough to withdraw {withdraw_amount}."
         )
         super().__init__(self.error)
@@ -13,11 +14,11 @@ class NoBalanceAvailable(Exception):
 class Account:
     def __init__(self, balance=0):
         self.balance = balance
-        self.actions = []
+        self.transactions = []
 
     def deposit(self, deposit_amount):
         self.balance += deposit_amount
-        self.actions.append(
+        self.transactions.append(
             {
                 "type": "deposit",
                 "amount": deposit_amount,
@@ -31,7 +32,7 @@ class Account:
             raise NoBalanceAvailable(self.balance, withdraw_amount)
         else:
             self.balance -= withdraw_amount
-            self.actions.append(
+            self.transactions.append(
                 {
                     "type": "withdraw",
                     "amount": withdraw_amount,
@@ -40,23 +41,6 @@ class Account:
                 }
             )
 
-    def print_statement(self):
-        str_list = ["date || credit || debit || balance"]
-        self.actions.sort(key=lambda item: item["date"], reverse=True)
-        for action in self.actions:
-            if action["type"] == "deposit":
-                str = (
-                    f"{action['date'].strftime('%d/%m/%Y')} || "
-                    f"{'{0:.2f}'.format(action['amount'])} || || "
-                    f"{'{0:.2f}'.format(action['current_balance'])}"
-                )
-                str_list.append(str)
-            else:
-                str = (
-                    f"{action['date'].strftime('%d/%m/%Y')} || || "
-                    f"{'{0:.2f}'.format(action['amount'])} || "
-                    f"{'{0:.2f}'.format(action['current_balance'])}"
-                )
-                str_list.append(str)
-
-        return print("\n".join(str_list))
+    def get_statement(self):
+        statement = Statement(self.transactions)
+        return statement.print_statement()

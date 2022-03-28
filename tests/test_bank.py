@@ -27,13 +27,13 @@ def test_bank_account_balance_decreases_on_withdraw(test_account):
 
 
 def test_bank_account_stores_an_action(test_account):
-    assert test_account.actions == []
+    assert test_account.transactions == []
 
 
 @freeze_time("2022-03-27")
 def test_bank_account_stores_a_deposit(test_account):
     test_account.deposit(1000)
-    assert test_account.actions == [
+    assert test_account.transactions == [
         {
             "type": "deposit",
             "amount": 1000,
@@ -47,7 +47,7 @@ def test_bank_account_stores_a_deposit(test_account):
 def test_bank_account_stores_multiple_deposits(test_account):
     test_account.deposit(1000)
     test_account.deposit(500)
-    assert test_account.actions == [
+    assert test_account.transactions == [
         {
             "type": "deposit",
             "amount": 1000,
@@ -67,7 +67,7 @@ def test_bank_account_stores_multiple_deposits(test_account):
 def test_bank_account_stores_a_withdraw(test_account):
     test_account.deposit(1000)
     test_account.withdraw(1000)
-    assert test_account.actions == [
+    assert test_account.transactions == [
         {
             "type": "deposit",
             "amount": 1000,
@@ -88,7 +88,7 @@ def test_bank_account_stores_multiple_withdraws(test_account):
     test_account.deposit(1000)
     test_account.withdraw(500)
     test_account.withdraw(250)
-    assert test_account.actions == [
+    assert test_account.transactions == [
         {
             "type": "deposit",
             "amount": 1000,
@@ -119,16 +119,15 @@ def test_withdraw_cannot_exceed_balance_total(test_account):
 
 
 @patch("bank.bank.datetime")
-def test_account_can_print_statement(datetime_mock, test_account, capsys):
+def test_account_can_get_statement(datetime_mock, test_account, capsys):
     datetime_mock.now.return_value = datetime(2023, 1, 10)
     test_account.deposit(1000)
     datetime_mock.now.return_value = datetime(2023, 1, 13)
     test_account.deposit(2000)
     datetime_mock.now.return_value = datetime(2023, 1, 14)
     test_account.withdraw(500)
-    test_account.print_statement()
+    test_account.get_statement()
     out, err = capsys.readouterr()
-    print(out)
     assert out == (
         "date || credit || debit || balance\n"
         "14/01/2023 || || 500.00 || 2500.00\n"
