@@ -34,7 +34,12 @@ def test_bank_account_stores_an_action(test_account):
 def test_bank_account_stores_a_deposit(test_account):
     test_account.deposit(1000)
     assert test_account.actions == [
-        {"type": "deposit", "amount": 1000, "date": datetime(2022, 3, 27), "current_balance": 1000}
+        {
+            "type": "deposit",
+            "amount": 1000,
+            "date": datetime(2022, 3, 27),
+            "current_balance": 1000,
+        }
     ]
 
 
@@ -43,8 +48,18 @@ def test_bank_account_stores_multiple_deposits(test_account):
     test_account.deposit(1000)
     test_account.deposit(500)
     assert test_account.actions == [
-        {"type": "deposit", "amount": 1000, "date": datetime(2022, 3, 27), "current_balance": 1000},
-        {"type": "deposit", "amount": 500, "date": datetime(2022, 3, 27), "current_balance": 1500},
+        {
+            "type": "deposit",
+            "amount": 1000,
+            "date": datetime(2022, 3, 27),
+            "current_balance": 1000,
+        },
+        {
+            "type": "deposit",
+            "amount": 500,
+            "date": datetime(2022, 3, 27),
+            "current_balance": 1500,
+        },
     ]
 
 
@@ -53,8 +68,18 @@ def test_bank_account_stores_a_withdraw(test_account):
     test_account.deposit(1000)
     test_account.withdraw(1000)
     assert test_account.actions == [
-        {"type": "deposit", "amount": 1000, "date": datetime(2022, 3, 27), "current_balance": 1000},
-        {"type": "withdraw", "amount": 1000, "date": datetime(2022, 3, 27), "current_balance": 0},
+        {
+            "type": "deposit",
+            "amount": 1000,
+            "date": datetime(2022, 3, 27),
+            "current_balance": 1000,
+        },
+        {
+            "type": "withdraw",
+            "amount": 1000,
+            "date": datetime(2022, 3, 27),
+            "current_balance": 0,
+        },
     ]
 
 
@@ -64,9 +89,24 @@ def test_bank_account_stores_multiple_withdraws(test_account):
     test_account.withdraw(500)
     test_account.withdraw(250)
     assert test_account.actions == [
-        {"type": "deposit", "amount": 1000, "date": datetime(2022, 3, 27), "current_balance": 1000},
-        {"type": "withdraw", "amount": 500, "date": datetime(2022, 3, 27), "current_balance": 500},
-        {"type": "withdraw", "amount": 250, "date": datetime(2022, 3, 27), "current_balance": 250},
+        {
+            "type": "deposit",
+            "amount": 1000,
+            "date": datetime(2022, 3, 27),
+            "current_balance": 1000,
+        },
+        {
+            "type": "withdraw",
+            "amount": 500,
+            "date": datetime(2022, 3, 27),
+            "current_balance": 500,
+        },
+        {
+            "type": "withdraw",
+            "amount": 250,
+            "date": datetime(2022, 3, 27),
+            "current_balance": 250,
+        },
     ]
 
 
@@ -77,6 +117,7 @@ def test_withdraw_cannot_exceed_balance_total(test_account):
             str(e.value)
             == f"Your balance is 0. You do not have enough to withdraw 500."
         )
+
 
 @patch("bank.bank.datetime")
 def test_account_can_print_statement(datetime_mock, test_account, capsys):
@@ -89,5 +130,8 @@ def test_account_can_print_statement(datetime_mock, test_account, capsys):
     test_account.print_statement()
     out, err = capsys.readouterr()
     print(out)
-    assert out == "date || credit || debit || balance\n14/01/2023 || || 500.00 || 2500.00\n13/01/2023 || 2000.00 || || 3000.00\n10/01/2023 || 1000.00 || || 1000.00\n"
-    assert err == ''
+    assert (
+        out
+        == "date || credit || debit || balance\n14/01/2023 || || 500.00 || 2500.00\n13/01/2023 || 2000.00 || || 3000.00\n10/01/2023 || 1000.00 || || 1000.00\n"
+    )
+    assert err == ""
