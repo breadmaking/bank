@@ -24,9 +24,31 @@ pytest --cov
 flake8
 ```
 
-## Approach
-
-
+## How to use the program
+Open terminal
+```
+python
+```
+Import Class
+```
+from bank.bank import Account
+```
+Create Account
+```
+account = Account()
+```
+Make a deposit
+```
+account.deposit(1000)
+```
+Make a withdrawl
+```
+account.withdraw(500)
+```
+Print account statement
+```
+account.print_statement()
+```
 
 ## Specification
 
